@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views import generic
 
+from restaurant.forms import CookCreationForm, CookUpdateForm
 from restaurant.models import DishType, Cook, Dish
 
 
@@ -61,6 +62,25 @@ class CookListView(LoginRequiredMixin, generic.ListView):
 class CookDetailView(LoginRequiredMixin, generic.DetailView):
     model = Cook
     queryset = Cook.objects.all().prefetch_related("dishes__dish_type")
+
+
+class CookCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Cook
+    form_class = CookCreationForm
+    template_name = "restaurant/cook_form.html"
+    success_url = reverse_lazy("restaurant:cook-list")
+
+
+class CookUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Cook
+    form_class = CookUpdateForm
+    template_name = "restaurant/cook_form.html"
+
+
+class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Cook
+    template_name = "restaurant/cook_delete.html"
+    success_url = reverse_lazy("restaurant:cook-list")
 
 
 class DishListView(LoginRequiredMixin, generic.ListView):
