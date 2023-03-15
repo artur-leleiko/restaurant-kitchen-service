@@ -22,8 +22,8 @@ class CookCreationForm(UserCreationForm):
         )
 
 
-class CookUpdateForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
+class CookUpdateForm(forms.ModelForm):
+    class Meta:
         model = Cook
         fields = UserCreationForm.Meta.fields + (
             "username",
