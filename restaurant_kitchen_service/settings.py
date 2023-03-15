@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "bootstrap4",
     "crispy_forms",
     "restaurant"
 ]
@@ -104,6 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "restaurant.Cook"
+
+LOGIN_REDIRECT_URL = "/"
 
 
 # Internationalization
