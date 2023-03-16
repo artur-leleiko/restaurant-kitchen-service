@@ -68,6 +68,15 @@ class DishForm(forms.ModelForm):
         fields = "__all__"
 
 
+class DishSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=255,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by name"})
+    )
+
+
 def validate_years_of_experience(years_of_experience) -> int:
     if type(years_of_experience) != int:
         raise ValidationError("Years of experience must be integer")
