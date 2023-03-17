@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import QuerySet
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views import generic
+from django.views import generic, View
 
 from restaurant.forms import (
     CookCreationForm,
@@ -127,6 +128,7 @@ class CookDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("restaurant:cook-list")
 
 
+
 class DishListView(LoginRequiredMixin, generic.ListView):
     model = Dish
     queryset = Dish.objects.all().select_related("dish_type")
@@ -153,6 +155,18 @@ class DishListView(LoginRequiredMixin, generic.ListView):
 
 class DishDetailView(LoginRequiredMixin, generic.DetailView):
     model = Dish
+
+
+class AssignToDishView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        cook = Cook.objects.get(id=self.request.user.id)
+        if Dish.objects.get(id=pk) in cook.dishes.all():
+            cook.dishes.remove(pk)
+        else:
+            cook.dishes.add(pk)
+        return HttpResponseRedirect(
+            reverse_lazy("restaurant:dish-detail", args=[pk])
+        )
 
 
 class DishCreateView(LoginRequiredMixin, generic.CreateView):
